@@ -307,6 +307,7 @@ app.post("/addbid/:round", async (request, response) => {
     if(CreditsMap["Term03"] == 1)
     {
       if (CreditsMap["Term1"] < 2 || CreditsMap["Term02"] < 2 || CreditsMap["Term1"] + CreditsMap["Term02"] < 8) {
+        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
         throw new Error('Your bids did not align with rules!')
       }
     }
@@ -314,6 +315,7 @@ app.post("/addbid/:round", async (request, response) => {
     if(CreditsMap["Term03"] == 2)
     {
       if (CreditsMap["Term1"] + CreditsMap["Term02"] < 6) {
+        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
         throw new Error('Your bids did not align with rules!')
       }
     }
