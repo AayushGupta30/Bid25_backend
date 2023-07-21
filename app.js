@@ -192,7 +192,8 @@ app.post("/addbid/:round", async (request, response) => {
     })
     const CreditsMap = {
       "Term1": 0,
-      "Term02": 0
+      "Term02": 0,
+      "Term03": 0,
     }
     const subjectMap = {}
     const subjects = await Subject.find()
@@ -202,7 +203,7 @@ app.post("/addbid/:round", async (request, response) => {
     const assignedSubjects = await Subject.find({
       StudentsList: mongoose.Types.ObjectId(student)
     })
-    for (const subject of assignedSubjects) {
+    /**for (const subject of assignedSubjects) {
       switch (subject.Term) {
         case 1:
           CreditsMap["Term1"] += subject.Credits
@@ -217,8 +218,26 @@ app.post("/addbid/:round", async (request, response) => {
       if (Object.keys(bids).includes(subject.SubCode)) {
         throw new Error('Not allowed to bid already assigned subjects!')
       }
+    }**/
+    for (const subject of assignedSubjects) {
+      if(subject.Term == 1){
+        CreditsMap["Term1"] += subject.Credits
+      }
+      if(subject.Term == 2){
+        if(subject.Credits == 3){
+          CreditsMap["Term02"] += subject.Credits
+        }
+        if(subject.Credits == 6){
+          CreditsMap["Term1"] += subject.Credits
+          CreditsMap["Term02"] += subject.Credits
+        }
+      }
+      if (Object.keys(bids).includes(subject.SubCode)) {
+        throw new Error('Not allowed to bid already assigned subjects!')
+      }
     }
-    for (const newSubCode of Object.keys(bids)) {
+
+    /*for (const newSubCode of Object.keys(bids)) {
       if (bids[newSubCode] > 0) {
         switch (subjectMap[newSubCode].Term) {
           case 1:
@@ -232,9 +251,71 @@ app.post("/addbid/:round", async (request, response) => {
             break;
         }
       }
+    }*/
+
+    for (const newSubCode of Object.keys(bids)) {
+      if (bids[newSubCode] > 0) {
+        if(subjectMap[newSubCode].Term == 1){
+          CreditsMap["Term1"]++
+        }
+        if(subjectMap[newSubCode].Term == 2){
+          if(subjectMap[newSubCode].Credits == 3){
+            CreditsMap["Term02"]++
+          }
+          if(subjectMap[newSubCode].Credits == 6){
+            CreditsMap["Term03"]++
+          }
+        }
+      }
     }
-    if (CreditsMap["Term1"] < 12 || (studentData.project === true && CreditsMap["Term02"] < 9) || (studentData.project === false && CreditsMap["Term02"] < 15)) {
+
+    /* for (const newSubCode of Object.keys(bids)) {
+      if (bids[newSubCode] > 0) {
+        if(subjectMap[newSubCode].Term == 1){
+          CreditsMap["Term1"] += subjectMap[newSubCode].Credits
+          console.log('1 : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"])
+        }
+        if(subjectMap[newSubCode].Term == 2){
+          if(subjectMap[newSubCode].Credits == 3){
+            CreditsMap["Term02"] += subjectMap[newSubCode].Credits
+            console.log('2 : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"])
+          }
+          if(subjectMap[newSubCode].Credits == 6){
+            CreditsMap["Term02"] += subjectMap[newSubCode].Credits
+            console.log('3 : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"])
+          }
+        }
+      }
+    } */
+
+    //if (CreditsMap["Term1"] < 12 || (studentData.project === true && CreditsMap["Term02"] < 9) || (studentData.project === false && CreditsMap["Term02"] < 15)) {
+    //  throw new Error('Your bids did not align with rules!')
+    //}
+    /*if (CreditsMap["Term1"] + CreditsMap["Term02"] + CreditsMap["Term03"] < 10) {
+      console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
       throw new Error('Your bids did not align with rules!')
+    }*/
+
+    if(CreditsMap["Term03"] == 0)
+    {
+      if (CreditsMap["Term1"] < 4 || CreditsMap["Term02"] < 4 || CreditsMap["Term1"] + CreditsMap["Term02"] < 10) {
+        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+        throw new Error('Your bids did not align with rules!')
+      }
+    }
+
+    if(CreditsMap["Term03"] == 1)
+    {
+      if (CreditsMap["Term1"] < 2 || CreditsMap["Term02"] < 2 || CreditsMap["Term1"] + CreditsMap["Term02"] < 8) {
+        throw new Error('Your bids did not align with rules!')
+      }
+    }
+
+    if(CreditsMap["Term03"] == 2)
+    {
+      if (CreditsMap["Term1"] + CreditsMap["Term02"] < 6) {
+        throw new Error('Your bids did not align with rules!')
+      }
     }
 
     if (round === 0) {
