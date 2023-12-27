@@ -192,7 +192,8 @@ app.post("/addbid/:round", async (request, response) => {
     })
     const CreditsMap = {
       "Term1": 0,
-      "Term02": 0
+      "Term02": 0,
+      "Term03": 0
     }
     const subjectMap = {}
     const subjects = await Subject.find()
@@ -202,6 +203,7 @@ app.post("/addbid/:round", async (request, response) => {
     const assignedSubjects = await Subject.find({
       StudentsList: mongoose.Types.ObjectId(student)
     })
+    /**
     for (const subject of assignedSubjects) {
       switch (subject.Term) {
         case 1:
@@ -233,11 +235,92 @@ app.post("/addbid/:round", async (request, response) => {
         }
       }
     }
-    if ((studentData.project === true && (CreditsMap["Term1"] + CreditsMap["Term02"] != 21) || CreditsMap["Term02"] < 9)) {
+    if ((studentData.project === true && (CreditsMap["Term1"] + CreditsMap["Term02"] != 21) || CreditsMap["Term1"] < 9 || CreditsMap["Term02"] < 9)) {
       throw new Error('Your bids did not align with rules!')
     }
-    else if ((studentData.project === false && (CreditsMap["Term1"] + CreditsMap["Term02"] != 27) || CreditsMap["Term02"] < 12)) {
+    else if ((studentData.project === false && (CreditsMap["Term1"] + CreditsMap["Term02"] != 27) || CreditsMap["Term1"] < 12 || CreditsMap["Term02"] < 12)) {
       throw new Error('Your bids did not align with rules!')
+    }
+    **/
+    for (const subject of assignedSubjects) {
+      if(subject.Term == 1){
+        CreditsMap["Term1"] += subject.Credits
+      }
+      if(subject.Term == 2){
+        if(subject.Credits == 3){
+          CreditsMap["Term02"] += subject.Credits
+        }
+        if(subject.Credits == 6){
+          CreditsMap["Term1"] += subject.Credits
+          CreditsMap["Term02"] += subject.Credits
+        }
+      }
+      if (Object.keys(bids).includes(subject.SubCode)) {
+        throw new Error('Not allowed to bid already assigned subjects!')
+      }
+    }
+    for (const newSubCode of Object.keys(bids)) {
+      if (bids[newSubCode] > 0) {
+        if(subjectMap[newSubCode].Term == 1){
+          CreditsMap["Term1"]++
+        }
+        if(subjectMap[newSubCode].Term == 2){
+          if(subjectMap[newSubCode].Credits == 3){
+            CreditsMap["Term02"]++
+          }
+          if(subjectMap[newSubCode].Credits == 6){
+            CreditsMap["Term03"]++
+          }
+        }
+      }
+    }
+    
+    if(CreditsMap["Term03"] == 0 && studentData.project === false)
+    {
+      if (CreditsMap["Term1"] < 4 || CreditsMap["Term02"] < 4 || CreditsMap["Term1"] + CreditsMap["Term02"] < 9) {
+        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+        throw new Error('Your bids did not align with rules!')
+      }
+    }
+
+    if(CreditsMap["Term03"] == 1 && studentData.project === false)
+    {
+      if (CreditsMap["Term1"] < 2 || CreditsMap["Term02"] < 2 || CreditsMap["Term1"] + CreditsMap["Term02"] < 7) {
+        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+        throw new Error('Your bids did not align with rules!')
+      }
+    }
+
+    if(CreditsMap["Term03"] == 2 && studentData.project === false)
+    {
+      if (CreditsMap["Term1"] + CreditsMap["Term02"] < 5) {
+        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+        throw new Error('Your bids did not align with rules!')
+      }
+    }
+
+    if(CreditsMap["Term03"] == 0 && studentData.project === true)
+    {
+      if (CreditsMap["Term1"] < 3 || CreditsMap["Term02"] < 3 || CreditsMap["Term1"] + CreditsMap["Term02"] < 7) {
+        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+        throw new Error('Your bids did not align with rules!')
+      }
+    }
+
+    if(CreditsMap["Term03"] == 1 && studentData.project === true)
+    {
+      if (CreditsMap["Term1"] < 1 || CreditsMap["Term02"] < 1 || CreditsMap["Term1"] + CreditsMap["Term02"] < 5) {
+        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+        throw new Error('Your bids did not align with rules!')
+      }
+    }
+
+    if(CreditsMap["Term03"] == 2 && studentData.project === true)
+    {
+      if (CreditsMap["Term1"] + CreditsMap["Term02"] < 3) {
+        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+        throw new Error('Your bids did not align with rules!')
+      }
     }
 
     if (round === 0) {
@@ -246,6 +329,7 @@ app.post("/addbid/:round", async (request, response) => {
         bids: [bids]
       })
       await ReceivedBid.save()
+
     } else {
       const oldBid = await receivedBid.findOne({
         student: mongoose.Types.ObjectId(student)
