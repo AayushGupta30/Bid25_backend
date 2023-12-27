@@ -233,10 +233,10 @@ app.post("/addbid/:round", async (request, response) => {
         }
       }
     }
-    if ((studentData.project === true && (CreditsMap["Term1"] + CreditsMap["Term02"] != 21) || CreditsMap["Term1"] < 9 || CreditsMap["Term02"] < 9)) {
+    if ((studentData.project === true && (CreditsMap["Term1"] + CreditsMap["Term02"] != 21) || CreditsMap["Term02"] < 9)) {
       throw new Error('Your bids did not align with rules!')
     }
-    else if ((studentData.project === false && (CreditsMap["Term1"] + CreditsMap["Term02"] != 27) || CreditsMap["Term1"] < 12 || CreditsMap["Term02"] < 12)) {
+    else if ((studentData.project === false && (CreditsMap["Term1"] + CreditsMap["Term02"] != 27) || CreditsMap["Term02"] < 12)) {
       throw new Error('Your bids did not align with rules!')
     }
 
