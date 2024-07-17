@@ -247,7 +247,7 @@ app.post("/addbid/:round", async (request, response) => {
         CreditsMap["Term1"] += subject.Credits
       }
       if(subject.Term == 2){
-        if(subject.Credits == 3){
+        if(subject.Credits == 3 || subject.Credits == 4){
           CreditsMap["Term02"] += subject.Credits
         }
         if(subject.Credits == 6){
@@ -265,7 +265,7 @@ app.post("/addbid/:round", async (request, response) => {
           CreditsMap["Term1"]++
         }
         if(subjectMap[newSubCode].Term == 2){
-          if(subjectMap[newSubCode].Credits == 3){
+          if(subjectMap[newSubCode].Credits == 3 || subjectMap[newSubCode].Credits == 4){
             CreditsMap["Term02"]++
           }
           if(subjectMap[newSubCode].Credits == 6){
