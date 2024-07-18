@@ -12,6 +12,7 @@ const auth = require("./auth");
 const { Parser } = require('json2csv');
 var cors = require('cors');
 const subjectUserModel = require("./db/subjectUserModel");
+const sendEmail = require('./mailer');
 app.use(cors())
 // body parser configuration
 app.use(bodyParser.json());
@@ -341,6 +342,18 @@ app.post("/addbid/:round", async (request, response) => {
       oldBid.bids.push(bids)
       await oldBid.save()
     }
+
+    // Fetch the user's email
+    const user = await User.findById(student);
+    
+    // Construct the email content
+    const subjectList = Object.keys(bids).map(subCode => subCode + ' - ' + subjectMap[subCode].SubjectName + ' - ' + bids[subCode]).join('\n');
+    const emailContent = `Hi ${user.name}, \nYour bid was placed successfully for the following subjects: \n${subjectList}`;
+
+    //console.log(bids);
+    // Send the email
+    sendEmail(user.email, 'Bid Created Successfully - ' + user.name, emailContent);
+    
     response.json({
       message: 'Bid Created Successfully!'
     })
