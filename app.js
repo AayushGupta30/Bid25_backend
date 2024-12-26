@@ -430,7 +430,7 @@ app.get('/subjects', auth, async (req, res, next) => {
       StudentsList: {
         "$ne": student._id
       }
-    });
+    }.sort({term: 1, credits: 1}));
     return res.status(200).json({
       success: true,
       count: subjects.length,
