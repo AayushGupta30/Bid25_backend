@@ -276,7 +276,7 @@ app.post("/addbid/:round", async (request, response) => {
       }
     }
     //Semester 3
-    /**if(CreditsMap["Term03"] == 0 && studentData.project === false)
+    if(CreditsMap["Term03"] == 0 && studentData.project === false)
     {
       if (CreditsMap["Term1"] < 4 || CreditsMap["Term02"] < 4 || CreditsMap["Term1"] + CreditsMap["Term02"] < 10) {
         console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
@@ -322,56 +322,56 @@ app.post("/addbid/:round", async (request, response) => {
         console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
         throw new Error('Your bids did not align with rules!')
       }
-    }**/
+    }
 
     //Semester 4
-    if(CreditsMap["Term03"] == 0 && studentData.project === false)
-    {
-      if (CreditsMap["Term1"] < 4 || CreditsMap["Term02"] < 4 || CreditsMap["Term1"] + CreditsMap["Term02"] < 9) {
-        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
-      }
-    }
+    // if(CreditsMap["Term03"] == 0 && studentData.project === false)
+    // {
+    //   if (CreditsMap["Term1"] < 4 || CreditsMap["Term02"] < 4 || CreditsMap["Term1"] + CreditsMap["Term02"] < 9) {
+    //     console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+    //     throw new Error('Your bids did not align with rules!')
+    //   }
+    // }
 
-    if(CreditsMap["Term03"] == 1 && studentData.project === false)
-    {
-      if (CreditsMap["Term1"] < 2 || CreditsMap["Term02"] < 2 || CreditsMap["Term1"] + CreditsMap["Term02"] < 7) {
-        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
-      }
-    }
+    // if(CreditsMap["Term03"] == 1 && studentData.project === false)
+    // {
+    //   if (CreditsMap["Term1"] < 2 || CreditsMap["Term02"] < 2 || CreditsMap["Term1"] + CreditsMap["Term02"] < 7) {
+    //     console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+    //     throw new Error('Your bids did not align with rules!')
+    //   }
+    // }
 
-    if(CreditsMap["Term03"] == 2 && studentData.project === false)
-    {
-      if (CreditsMap["Term1"] + CreditsMap["Term02"] < 5) {
-        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
-      }
-    }
+    // if(CreditsMap["Term03"] == 2 && studentData.project === false)
+    // {
+    //   if (CreditsMap["Term1"] + CreditsMap["Term02"] < 5) {
+    //     console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+    //     throw new Error('Your bids did not align with rules!')
+    //   }
+    // }
 
-    if(CreditsMap["Term03"] == 0 && studentData.project === true)
-    {
-      if (CreditsMap["Term1"] < 2 || CreditsMap["Term02"] < 2 || CreditsMap["Term1"] + CreditsMap["Term02"] < 7) {
-        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
-      }
-    }
+    // if(CreditsMap["Term03"] == 0 && studentData.project === true)
+    // {
+    //   if (CreditsMap["Term1"] < 2 || CreditsMap["Term02"] < 2 || CreditsMap["Term1"] + CreditsMap["Term02"] < 7) {
+    //     console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+    //     throw new Error('Your bids did not align with rules!')
+    //   }
+    // }
 
-    if(CreditsMap["Term03"] == 1 && studentData.project === true)
-    {
-      if (/*CreditsMap["Term1"] < 1 || CreditsMap["Term02"] < 1 ||*/ CreditsMap["Term1"] + CreditsMap["Term02"] < 5) {
-        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
-      }
-    }
+    // if(CreditsMap["Term03"] == 1 && studentData.project === true)
+    // {
+    //   if (/*CreditsMap["Term1"] < 1 || CreditsMap["Term02"] < 1 ||*/ CreditsMap["Term1"] + CreditsMap["Term02"] < 5) {
+    //     console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+    //     throw new Error('Your bids did not align with rules!')
+    //   }
+    // }
 
-    if(CreditsMap["Term03"] == 2 && studentData.project === true)
-    {
-      if (CreditsMap["Term1"] + CreditsMap["Term02"] < 3) {
-        console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
-      }
-    }
+    // if(CreditsMap["Term03"] == 2 && studentData.project === true)
+    // {
+    //   if (CreditsMap["Term1"] + CreditsMap["Term02"] < 3) {
+    //     console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
+    //     throw new Error('Your bids did not align with rules!')
+    //   }
+    // }
     
     if (round === 0) {
       const ReceivedBid = new receivedBid({
