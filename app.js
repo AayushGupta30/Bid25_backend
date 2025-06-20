@@ -204,6 +204,14 @@ app.post("/addbid/:round", async (request, response) => {
     const assignedSubjects = await Subject.find({
       StudentsList: mongoose.Types.ObjectId(student)
     })
+
+    const totalCredits = CreditsMap["Term1"] + CreditsMap["Term02"] + CreditsMap["Term03"];
+    console.log(CreditsMap["Term1"]);
+    console.log(CreditsMap["Term02"]);
+    console.log(CreditsMap["Term03"]);
+    console.log(totalCredits);
+
+
     /**
     for (const subject of assignedSubjects) {
       switch (subject.Term) {
@@ -275,11 +283,7 @@ app.post("/addbid/:round", async (request, response) => {
         }
       }
     }
-    const totalCredits = CreditsMap["Term1"] + CreditsMap["Term02"] + CreditsMap["Term03"];
-    console.log(CreditsMap["Term1"]);
-    console.log(CreditsMap["Term02"]);
-    console.log(CreditsMap["Term03"]);
-    console.log(totalCredits);
+    
 
     //Semester 3
     if(CreditsMap["Term03"] == 0 && studentData.project === false)
