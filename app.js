@@ -373,6 +373,23 @@ app.post("/addbid/:round", async (request, response) => {
     //   }
     // }
     
+    
+    // GPT code 28=<bid<=31 
+    // Enforce minimum and maximum total credit rule
+    const totalCredits = CreditsMap["Term1"] + CreditsMap["Term02"] + CreditsMap["Term03"];
+
+    if (totalCredits < 28) {
+      console.log('Total credits:', totalCredits);
+      throw new Error('❌ You must bid for at least 28 total credits.');
+    }
+
+    if (totalCredits > 31) {
+      console.log('Total credits:', totalCredits);
+      throw new Error('❌ You cannot bid for more than 31 total credits.');
+    }
+    //ENd of GPT code 28=<bid<=31
+
+
     if (round === 0) {
       const ReceivedBid = new receivedBid({
         student: student,
