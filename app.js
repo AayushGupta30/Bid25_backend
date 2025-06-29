@@ -244,11 +244,7 @@ app.post("/addbid/:round", async (request, response) => {
     }
     **/
 
-    // Aayush
-    if ((CreditsMap["Term1"] + CreditsMap["Term02"] < 28 || CreditsMap["Term1"] + CreditsMap["Term02"] > 34)) {
-      throw new Error('Your bids should be between 28 and 34!')
-    }
-
+    
     for (const subject of assignedSubjects) {
       if(subject.Term == 1){
         CreditsMap["Term1"] += subject.Credits
