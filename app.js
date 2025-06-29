@@ -245,38 +245,82 @@ app.post("/addbid/:round", async (request, response) => {
     **/
 
     
-    for (const subject of assignedSubjects) {
-      if(subject.Term == 1){
-        CreditsMap["Term1"] += subject.Credits
+    // for (const subject of assignedSubjects) {
+    //   if(subject.Term == 1){
+    //     CreditsMap["Term1"] += subject.Credits
+    //   }
+    //   if(subject.Term == 2){
+    //     if(subject.Credits == 3 || subject.Credits == 4){
+    //       CreditsMap["Term02"] += subject.Credits
+    //     }
+    //     if(subject.Credits == 6){
+    //       CreditsMap["Term1"] += subject.Credits
+    //       CreditsMap["Term02"] += subject.Credits
+    //     }
+    //   }
+    //   if (Object.keys(bids).includes(subject.SubCode)) {
+    //     throw new Error('Not allowed to bid already assigned subjects!')
+    //   }
+    // }
+    // for (const newSubCode of Object.keys(bids)) {
+    //   if (bids[newSubCode] > 0) {
+    //     if(subjectMap[newSubCode].Term == 1){
+    //       CreditsMap["Term1"]++
+    //     }
+    //     if(subjectMap[newSubCode].Term == 2){
+    //       if(subjectMap[newSubCode].Credits == 3 || subjectMap[newSubCode].Credits == 4){
+    //         CreditsMap["Term02"]++
+    //       }
+    //       if(subjectMap[newSubCode].Credits == 6){
+    //         CreditsMap["Term03"]++
+    //       }
+    //     }
+    //   }
+    // }
+
+
+    for (const subject of assignedSubjects) {  
+      if (subject.Term == 1) {
+      CreditsMap["Term1"] += subject.Credits;
       }
-      if(subject.Term == 2){
-        if(subject.Credits == 3 || subject.Credits == 4){
-          CreditsMap["Term02"] += subject.Credits
-        }
-        if(subject.Credits == 6){
-          CreditsMap["Term1"] += subject.Credits
-          CreditsMap["Term02"] += subject.Credits
-        }
+
+      if (subject.Term == 2) {
+          if (subject.Credits == 3 || subject.Credits == 4) {
+            CreditsMap["Term02"] += subject.Credits;
+          }
+          if (subject.Credits == 6) {
+            CreditsMap["Term1"] += subject.Credits;
+            CreditsMap["Term02"] += subject.Credits;
+            CreditsMap["Term03"] += 1; // Count of 6-credit subjects
+          }
       }
+
       if (Object.keys(bids).includes(subject.SubCode)) {
-        throw new Error('Not allowed to bid already assigned subjects!')
+        throw new Error('❌ Not allowed to bid already assigned subjects!');
       }
     }
+
     for (const newSubCode of Object.keys(bids)) {
       if (bids[newSubCode] > 0) {
-        if(subjectMap[newSubCode].Term == 1){
-          CreditsMap["Term1"]++
-        }
-        if(subjectMap[newSubCode].Term == 2){
-          if(subjectMap[newSubCode].Credits == 3 || subjectMap[newSubCode].Credits == 4){
-            CreditsMap["Term02"]++
+        const course = subjectMap[newSubCode];
+
+        if (course.Term == 1) {
+          CreditsMap["Term1"] += course.Credits;
+        }   
+
+        if (course.Term == 2) {
+          if (course.Credits == 3 || course.Credits == 4) {
+            CreditsMap["Term02"] += course.Credits;
           }
-          if(subjectMap[newSubCode].Credits == 6){
-            CreditsMap["Term03"]++
+          if (course.Credits == 6) {
+            CreditsMap["Term1"] += course.Credits;
+            CreditsMap["Term02"] += course.Credits;
+            CreditsMap["Term03"] += 1; // Count of 6-credit subjects
           }
         }
       }
     }
+    
     //Semester 3
     if(CreditsMap["Term03"] == 0 && studentData.project === false)
     {
