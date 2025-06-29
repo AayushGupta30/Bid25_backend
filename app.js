@@ -243,6 +243,12 @@ app.post("/addbid/:round", async (request, response) => {
       throw new Error('Your bids did not align with rules!')
     }
     **/
+
+    // Aayush
+    if ((CreditsMap["Term1"] + CreditsMap["Term02"] < 28 || CreditsMap["Term1"] + CreditsMap["Term02"] > 34)) {
+      throw new Error('Your bids should be between 28 and 34!')
+    }
+
     for (const subject of assignedSubjects) {
       if(subject.Term == 1){
         CreditsMap["Term1"] += subject.Credits
@@ -280,7 +286,7 @@ app.post("/addbid/:round", async (request, response) => {
     {
       if (CreditsMap["Term1"] < 4 || CreditsMap["Term02"] < 4 || CreditsMap["Term1"] + CreditsMap["Term02"] < 10) {
         console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
+        throw new Error('Your bids did not align with rules!-1')
       }
     }
 
@@ -288,7 +294,7 @@ app.post("/addbid/:round", async (request, response) => {
     {
       if (CreditsMap["Term1"] < 2 || CreditsMap["Term02"] < 2 || CreditsMap["Term1"] + CreditsMap["Term02"] < 8) {
         console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
+        throw new Error('Your bids did not align with rules! -2')
       }
     }
 
@@ -296,7 +302,7 @@ app.post("/addbid/:round", async (request, response) => {
     {
       if (CreditsMap["Term1"] + CreditsMap["Term02"] < 6) {
         console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
+        throw new Error('Your bids did not align with rules! -3')
       }
     }
 
@@ -304,7 +310,7 @@ app.post("/addbid/:round", async (request, response) => {
     {
       if (CreditsMap["Term1"] < 3 || CreditsMap["Term02"] < 3 || CreditsMap["Term1"] + CreditsMap["Term02"] < 7) {
         console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
+        throw new Error('Your bids did not align with rules!- 4')
       }
     }
 
@@ -312,7 +318,7 @@ app.post("/addbid/:round", async (request, response) => {
     {
       if (CreditsMap["Term1"] < 1 || CreditsMap["Term02"] < 1 || CreditsMap["Term1"] + CreditsMap["Term02"] < 5) {
         console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
+        throw new Error('Your bids did not align with rules! -5')
       }
     }
 
@@ -320,7 +326,7 @@ app.post("/addbid/:round", async (request, response) => {
     {
       if (CreditsMap["Term1"] + CreditsMap["Term02"] < 3) {
         console.log('%d : %d : %d', CreditsMap["Term1"], CreditsMap["Term02"], CreditsMap["Term03"])
-        throw new Error('Your bids did not align with rules!')
+        throw new Error('Your bids did not align with rules! -6')
       }
     }
 
@@ -404,7 +410,11 @@ app.post("/addbid/:round", async (request, response) => {
     sendEmail(user.email, 'Bid Created Successfully - ' + user.name, emailContent);
     
     response.json({
-      message: 'Bid Created Successfully!'
+      message: 'Bid Created Successfully!',
+      term1Credits: CreditsMap["Term1"],
+      term2Credits: CreditsMap["Term02"],
+      sixCreditCourseCount: CreditsMap["Term03"],
+      totalCredits: CreditsMap["Term1"] + CreditsMap["Term02"] + CreditsMap["Term03"]
     })
   } catch (error) {
     console.error(error)
